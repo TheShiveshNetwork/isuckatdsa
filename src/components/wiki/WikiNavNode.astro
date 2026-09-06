@@ -1,0 +1,130 @@
+---
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible";
+import { ChevronRight } from "@lucide/astro";
+import WikiNavNode from "./WikiNavNode.astro";
+import { cn } from "@/lib/utils";
+import { sortTreeNodes } from "@/lib/wiki/tree-utils";
+
+export interface TreeNode {
+  label: string;
+  href?: string;
+  chapter?: string;
+  children: Record<string, TreeNode>;
+}
+
+interface Props {
+  node: TreeNode;
+  class?: string;
+  depth: number;
+  currentPath: string;
+}
+
+const { node, class: className, depth, currentPath } = Astro.props;
+
+const childrenKeys = sortTreeNodes(node.children);
+const hasChildren = childrenKeys.length > 0;
+const isActive = node.href && currentPath === node.href.replace(/\/$/, "");
+const isFolder = hasChildren;
+const isRootCategory = isFolder && depth === 0;
+
+const INDENT_CLASSES: Record<number, string> = {
+  1: "ml-3",
+  2: "ml-6",
+  3: "ml-9",
+  4: "ml-12",
+};
+
+function getIndentClass(depth: number): string {
+  return INDENT_CLASSES[depth] ?? "";
+}
+
+function isChildActive(n: TreeNode): boolean {
+  if (n.href && currentPath === n.href.replace(/\/$/, "")) return true;
+  for (const child of Object.values(n.children)) {
+    if (isChildActive(child)) return true;
+  }
+  return false;
+}
+
+const shouldBeOpen = isChildActive(node);
+---
+
+{
+  isFolder ? (
+    <Collapsible open={shouldBeOpen} class={cn("flex flex-col", className)}>
+      <div class="flex w-full items-center justify-between">
+        {node.href ? (
+          isRootCategory ? (
+            <a
+              href={node.href}
+              class:list={[
+                "block pb-1 pt-4 text-xs font-semibold uppercase tracking-widest group-first/trigger:pt-0 transition-colors",
+                isActive
+                  ? "font-medium text-primary"
+                  : "text-muted-foreground hover:text-foreground",
+              ]}
+            >
+              {node.label}
+            </a>
+          ) : (
+            <a
+              href={node.href}
+              class:list={[
+                "block py-1 text-xs font-medium transition-colors",
+                getIndentClass(depth),
+                isActive
+                  ? "font-medium text-primary"
+                  : "text-muted-foreground hover:text-foreground",
+              ]}
+            >
+              {node.label}
+            </a>
+          )
+        ) : isRootCategory ? (
+          <span class="block pb-1 pt-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground group-first/trigger:pt-0">
+            {node.label}
+          </span>
+        ) : (
+          <span
+            class:list={[
+              "block py-1 text-xs font-medium text-muted-foreground",
+              getIndentClass(depth),
+            ]}
+          >
+            {node.label}
+          </span>
+        )}
+        <CollapsibleTrigger class="group/trigger flex cursor-pointer items-center justify-center p-1">
+          <ChevronRight class="size-4 text-muted-foreground/50 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+        </CollapsibleTrigger>
+      </div>
+      <CollapsibleContent animation="slide" class="flex flex-col space-y-0.5">
+        {childrenKeys.map((key) => (
+          <WikiNavNode
+            node={node.children[key]}
+            depth={depth + 1}
+            currentPath={currentPath}
+          />
+        ))}
+      </CollapsibleContent>
+    </Collapsible>
+  ) : (
+    <a
+      href={node.href}
+      class:list={[
+        "block rounded py-px text-sm leading-snug transition-colors",
+        getIndentClass(depth),
+        className,
+        isActive
+          ? "font-medium text-primary"
+          : "text-muted-foreground hover:text-foreground",
+      ]}
+    >
+      {node.label}
+    </a>
+  )
+}
