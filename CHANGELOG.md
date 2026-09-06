@@ -1,3 +1,10 @@
+# 1.0.0 (2026-09-06)
+
+
+### Features
+
+* isuckatdsa init and layout setup ([a485c3e](https://github.com/TheShiveshNetwork/isuckatdsa/commit/a485c3e4084f6512788aaedb2b00e8580bdfd77f))
+
 # [1.2.0](https://github.com/masmuss/isuckatdsa/compare/v1.1.0...v1.2.0) (2026-07-24)
 
 
