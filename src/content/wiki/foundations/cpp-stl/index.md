@@ -117,7 +117,7 @@ reverse(a.begin(), a.end()); // flip it
 int s = accumulate(a.begin(), a.end(), 0); // sum, no loop
 ```
 
-You learn _how_ it works in [[sorting]] and [[binarysearch]]. You _use_ this in the interview so you do not waste time writing the same toxic loop for the 100th time. That is why the toolbox exists.
+You learn *how* it works in [[sorting]] and [[binarysearch]]. You *use* this in the interview so you do not waste time writing the same toxic loop for the 100th time. That is why the toolbox exists.
 
 ## String - Find and Cut
 

@@ -11,7 +11,7 @@ chapter: "0.5"
 
 ### Overview
 
-If you are still reading, you picked Python. Good for you. Well, hey fellow semi-collon hater.
+If you are still reading, you picked Python. Good choice. Well that's all I can say. Don't think I hate Python okay.
 
 Quick thing to clear up. People say Python has an STL like C++. Not really. C++ STL is mostly a tidy set of template containers and algorithms. Python's standard library is different. It is a massive, diverse collection of built-in modules, packages and functions that come pre-installed with every Python distribution. It follows the idea of batteries included. You do not need to pip install anything to handle everyday tasks. The batteries are already in the box.
 
@@ -164,7 +164,7 @@ import bisect
 bisect.bisect_left(a, 2) # where to insert
 ```
 
-You learn _how_ in [[sorting]] and [[binarysearch]]. You _use_ this so you do not write the same toxic loop forever. That is why Python is called batteries included.
+You learn *how* in [[sorting]] and [[binarysearch]]. You *use* this so you do not write the same toxic loop forever. That is why Python is called batteries included.
 
 ---
 

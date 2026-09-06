@@ -117,7 +117,7 @@ Collections.reverse(a); // flip
 int cnt = Collections.frequency(a, 2); // count
 ```
 
-You learn _how_ in [[sorting]] and [[binarysearch]]. You _use_ this so you do not write the same toxic paperwork again. That is the whole point of the store.
+You learn *how* in [[sorting]] and [[binarysearch]]. You *use* this so you do not write the same toxic paperwork again. That is the whole point of the store.
 
 ## StringBuilder - Because Strings Are Stubborn
 
