@@ -1,3 +1,15 @@
+# 1.0.0 (2026-09-06)
+
+
+### Bug Fixes
+
+* build error pnpm version ([a6bcef8](https://github.com/TheShiveshNetwork/isuckatdsa/commit/a6bcef8067e8675bc112b4aa4128c2fcdd40d97a))
+
+
+### Features
+
+* isuckatdsa init and layout setup ([a485c3e](https://github.com/TheShiveshNetwork/isuckatdsa/commit/a485c3e4084f6512788aaedb2b00e8580bdfd77f))
+
 # [1.2.0](https://github.com/masmuss/isuckatdsa/compare/v1.1.0...v1.2.0) (2026-07-24)
 
 
