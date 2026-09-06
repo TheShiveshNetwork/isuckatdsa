@@ -1,6 +1,6 @@
 ---
 title: "Complexity"
-description: "Big O without the headache - time, space, and what your recursion stack is really doing."
+description: "Big O, time and space complexity, and input constraints."
 createdAt: 2026-09-07
 updatedAt: 2026-09-07
 tags: ["foundations"]
