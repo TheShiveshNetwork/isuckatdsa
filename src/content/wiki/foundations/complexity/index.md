@@ -15,7 +15,7 @@ Big O sounds like something that should require a lab coat and a whiteboard full
 
 **How long does your code take?** & **How much extra stuff does it need to carry around while it works?** That's genuinely the whole thing.
 
-Think of '*time*' like shaking hands at a party. Meet everyone once, and the bigger the party gets, the longer that takes you. Space is like sticky notes. Every time your code says "I'll deal with this later," it slaps a sticky note on a pile. Once that task is done, the note gets peeled off. So your pile only ever gets as tall as how deep you went, not how many people showed up to the party.
+Think of '_time_' like shaking hands at a party. Meet everyone once, and the bigger the party gets, the longer that takes you. Space is like sticky notes. Every time your code says "I'll deal with this later," it slaps a sticky note on a pile. Once that task is done, the note gets peeled off. So your pile only ever gets as tall as how deep you went, not how many people showed up to the party.
 
 You'll bump into this same picture again in [[recursion]] and [[foundations/core-patterns]], so keep it handy.
 
