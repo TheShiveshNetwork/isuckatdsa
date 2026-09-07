@@ -17,17 +17,18 @@ You use this when the array is sorted and you need a pair. Instead of checking e
 
 It is the opposite of brute force. You do not look at everything. You let the array guide you.
 
-```js
+```
 // sorted array, find pair that sums to target - O(n), O(1) space
 function twoPointers(arr, target) {
-  let left = 0, right = arr.length - 1; // two friends at ends
+  left = 0
+  right = arr.length - 1  // two friends at ends
   while (left < right) {
-    let sum = arr[left] + arr[right];
-    if (sum === target) return [left, right]; // found them
-    if (sum < target) left++;  // need bigger, move left forward
-    else right--;              // need smaller, move right back
+    sum = arr[left] + arr[right]
+    if (sum == target) return [left, right]  // found them
+    if (sum < target) left++  // need bigger, move left forward
+    else right--              // need smaller, move right back
   }
-  return null;
+  return null
 }
 ```
 

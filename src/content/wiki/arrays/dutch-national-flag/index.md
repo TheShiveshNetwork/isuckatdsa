@@ -21,19 +21,22 @@ You do it with three pointers, which you already met in [[arrays/two-pointers]].
 
 You have a walker in the middle. If it sees red, you swap it to the left. If it sees blue, you swap it to the right. If it sees white, you just move forward.
 
-```js
+```
 // one pass, O(n) time, O(1) space - no extra array
 function dutchFlag(arr) {
-  let low = 0, mid = 0, high = arr.length - 1;
+  low = 0
+  mid = 0
+  high = arr.length - 1
   while (mid <= high) {
-    if (arr[mid] === 0) {
-      [arr[low], arr[mid]] = [arr[mid], arr[low]]; // red to front
-      low++; mid++;
-    } else if (arr[mid] === 1) {
-      mid++; // white stays middle
+    if (arr[mid] == 0) {
+      swap(arr[low], arr[mid])  // red to front
+      low++
+      mid++
+    } else if (arr[mid] == 1) {
+      mid++  // white stays middle
     } else {
-      [arr[mid], arr[high]] = [arr[high], arr[mid]]; // blue to end
-      high--;
+      swap(arr[mid], arr[high])  // blue to end
+      high--
     }
   }
 }
