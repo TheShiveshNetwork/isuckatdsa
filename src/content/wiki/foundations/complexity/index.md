@@ -94,7 +94,7 @@ This is exactly why [[binarysearch]] and [[hashing]] feel like they're cheating 
 
 ## Can You Save Space Too?
 
-Normally your note pile grows right alongside how deep you go. There's a sneaky trick where you skip the pile entirely and just reuse a couple of pointers, temporarily linking nodes as you walk through and then unlinking them on the way back. It's a fun party trick to know exists, here's [the original paper](https://www.sciencedirect.com/science/article/abs/pii/0020019079900681) if you're curious, but for interviews the normal note pile approach is exactly what people expect from you. Just casually mention the trick exists if you want to look extra thoughtful.
+Normally your note pile grows right alongside how deep you go. There's a sneaky trick where you skip the pile entirely and just reuse a couple of pointers, temporarily linking nodes as you walk through and then unlinking them on the way back. It's a fun party trick to know exists, see this friendly explainer on [Morris traversal](https://www.geeksforgeeks.org/dsa/inorder-tree-traversal-without-recursion-and-without-stack) or the [TakeUForward walkthrough](https://takeuforward.org/data-structure/morris-preorder-traversal-of-a-binary-tree) if you're curious, but for interviews the normal note pile approach is exactly what people expect from you. Just casually mention the trick exists if you want to look extra thoughtful.
 
 If you want to actually watch a note pile build up and shrink in real time, this video does it with pictures and flowcharts, very chill to follow, [How recursion works, freeCodeCamp](https://www.freecodecamp.org/news/how-recursion-works-explained-with-flowcharts-and-a-video-de61f40cb7f9/).
 
