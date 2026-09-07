@@ -107,8 +107,14 @@ import { Search, LoaderCircle } from "@lucide/astro";
 <script>
   import { initSearch } from "@/lib/search/search-client";
 
-  document.addEventListener("astro:page-load", () => {
+  function init() {
     const dialog = document.getElementById("search-dialog");
     if (dialog) initSearch(dialog);
+  }
+
+  init();
+  document.addEventListener("astro:page-load", () => {
+    // Defer to ensure Dialog's createDialog has run first
+    requestAnimationFrame(init);
   });
 </script>
