@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://isuckatdsa.pages.dev/sitemap-index.xml
+Sitemap: https://isuckatdsa.vercel.app/sitemap-index.xml

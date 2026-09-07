@@ -1,6 +1,11 @@
 ---
 import { getCollection, render } from "astro:content";
 import WikiLayout from "@/layouts/WikiLayout.astro";
+import {
+  buildWikiTree,
+  flattenWikiTree,
+  getSidebarNavigation,
+} from "@/lib/wiki/tree-utils";
 
 export async function getStaticPaths() {
   const wikiEntries = await getCollection("wiki");
@@ -19,6 +24,11 @@ const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 const { title, description, createdAt, updatedAt, tags, growthStage, chapter } =
   entry.data;
+
+const allNotes = await getCollection("wiki");
+const pages = flattenWikiTree(buildWikiTree(allNotes));
+const currentPath = Astro.url.pathname.replace(/\/$/, "");
+const { prev, next } = getSidebarNavigation(pages, currentPath);
 ---
 
 <WikiLayout
@@ -32,6 +42,8 @@ const { title, description, createdAt, updatedAt, tags, growthStage, chapter } =
   chapter={chapter}
   rawContent={entry.body}
   downloadFilename={entry.id.split("/").pop()}
+  prevChapter={prev}
+  nextChapter={next}
 >
   <article class="custom-prose max-w-none">
     <Content />

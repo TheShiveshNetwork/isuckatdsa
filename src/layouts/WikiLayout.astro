@@ -7,6 +7,9 @@ import WikiSidebarRight from "@/components/wiki/WikiSidebarRight.astro";
 import BaseLayout from "./BaseLayout.astro";
 import { generateBreadcrumbs } from "@/lib/wiki/generate-breadcrumbs";
 import { Button } from "@/components/ui/button";
+import WikiPagination, {
+  type WikiPageRef,
+} from "@/components/wiki/WikiPagination.astro";
 
 interface Heading {
   depth: number;
@@ -25,6 +28,8 @@ interface Props {
   rawContent?: string;
   downloadFilename?: string;
   chapter?: string;
+  prevChapter?: WikiPageRef;
+  nextChapter?: WikiPageRef;
 }
 
 const {
@@ -38,6 +43,8 @@ const {
   rawContent,
   downloadFilename,
   chapter,
+  prevChapter,
+  nextChapter,
 } = Astro.props;
 
 const breadcrumbs = generateBreadcrumbs(Astro.url.pathname);
@@ -73,6 +80,7 @@ const breadcrumbs = generateBreadcrumbs(Astro.url.pathname);
         <article class="custom-prose max-w-none" data-pagefind-body>
           <slot />
         </article>
+        <WikiPagination prev={prevChapter} next={nextChapter} />
       </main>
 
       <aside class="hidden md:block">

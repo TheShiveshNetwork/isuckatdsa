@@ -3,7 +3,7 @@ export const SITE = {
   title: "isuckatdsa",
   description: "Minimalist Digital Garden",
   author: "isuckatdsa",
-  url: "https://isuckatdsa.pages.dev",
+  url: "https://isuckatdsa.vercel.app",
   image: "/og-image.png",
   favicon: "/favicon.svg",
 };
