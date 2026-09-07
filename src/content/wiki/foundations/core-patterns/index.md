@@ -90,7 +90,7 @@ You know that friend who adds up the restaurant bill from scratch every time som
 // you walk once and write down running totals
 // prefix[i] is sum of first i items, so sum from l to r is just prefix[r+1] - prefix[l]
 let prefix = [0];
-for (let x of arr) prefix.push(prefix[prefix.length-1] + x);
+for (let x of arr) prefix.push(prefix[prefix.length - 1] + x);
 ```
 
 You do one walk to remember, a second walk to answer instantly. This tiny trick is the secret behind [[arrays/prefix-sum]] and [[hashing/prefix-sum-plus-hashmap]].

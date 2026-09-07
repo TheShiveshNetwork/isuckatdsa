@@ -164,7 +164,7 @@ import bisect
 bisect.bisect_left(a, 2) # where to insert
 ```
 
-You learn *how* in [[sorting]] and [[binarysearch]]. You *use* this so you do not write the same toxic loop forever. That is why Python is called batteries included.
+You learn _how_ in [[sorting]] and [[binarysearch]]. You _use_ this so you do not write the same toxic loop forever. That is why Python is called batteries included.
 
 ---
 
