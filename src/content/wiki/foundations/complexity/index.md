@@ -11,61 +11,65 @@ chapter: "0.1"
 
 ### Overview
 
-Hey, let me be honest with you. Big O sounds scary, but it is just two simple questions. How long will your code take? And how much extra space does it need to remember things along the way? That is it.
+Big O sounds like something that should require a lab coat and a whiteboard full of Greek letters. No, okay let's be real it sounds like some WWE wrestler's name. Well, to me at least it does. But yeah technically it is just two questions wearing a mawashi.
 
-Think of time like shaking hands at a party. If you have to meet everyone once, that takes longer as the party gets bigger. Space is like sticky notes you carry. Every time you say I will come back to this later, you stick a note on top of the pile. When you finish that task, you peel it off. Your pile only gets as tall as how deep you go, not how many people are at the party.
+**How long does your code take?** & **How much extra stuff does it need to carry around while it works?** That's genuinely the whole thing.
 
-You will see this a lot in [[recursion]] and [[foundations/core-patterns]], so keep that picture in mind.
+Think of '*time*' like shaking hands at a party. Meet everyone once, and the bigger the party gets, the longer that takes you. Space is like sticky notes. Every time your code says "I'll deal with this later," it slaps a sticky note on a pile. Once that task is done, the note gets peeled off. So your pile only ever gets as tall as how deep you went, not how many people showed up to the party.
 
-## The Two Questions You Should Always Ask
+You'll bump into this same picture again in [[recursion]] and [[foundations/core-patterns]], so keep it handy.
 
-**How many times do you visit something?** If you have to see every person once, you cannot do better than that. The nice example in [summing root-to-leaf numbers](https://www.techinterviewhandbook.org/blog/summing-root-to-leaf-numbers/#the-algorithmic-complexity) shows this well. You walk through the whole tree and visit every node once to build the numbers. You do one small calculation at each node, so the time grows directly with the number of nodes. If you have N nodes, you do N visits.
+## Visiting People vs Stacking Notes
 
-**How tall does your pile of notes get?** When you use recursion, your notes pile up. You add a note, go to a child, add another note, and so on. When you reach a leaf you start peeling notes off as you backtrack. So the space you need is not the total number of nodes, it is just how deep the tree is. We call that height H. If the tree is nice and balanced, H is small. If the tree is lopsided and looks like a chain, H becomes N, and then you need a lot of space.
+Here's the short version, because honestly the long version is a lot to read before your morning coffee kicks in.
+
+**Visits are about how many things you have to touch.** If the job genuinely requires looking at every single item once, that's your floor. You can't magically go faster than "look at everyone once." A neat real example of this is [summing root-to-leaf numbers](https://www.techinterviewhandbook.org/blog/summing-root-to-leaf-numbers/#the-algorithmic-complexity), where you walk every node in a tree exactly once. N nodes, N visits. No shortcuts, no cheat codes.
+
+**Notes are about how deep you go, not how many people exist.** In recursion, you stick a note down, step into a child, stick another note, repeat. When you hit a leaf, you start peeling notes off on your way back out. So your pile height is just the depth of the tree, not the total size of it. We call that H. A nicely balanced tree keeps H small. A lopsided tree that looks like a straight line turns H into basically N, and suddenly your pile is enormous.
 
 ```py
-# You visit every node once - time grows with N
-# Your notes pile only as deep as the tree is tall - space is H
+# You visit every node once, so time grows with N
+# Your note pile only ever gets as tall as the tree, so space is H
 def walk(node, cur=0):
     if not node:
         return 0
-    cur = cur * 10 + node.val  # build number, one small step
-    if not node.left and not node.right:  # reached a leaf, no more going deeper
+    cur = cur * 10 + node.val
+    if not node.left and not node.right:
         return cur
-    # go left and right, each call adds a note, then peels it
     return walk(node.left, cur) + walk(node.right, cur)
 ```
 
-After you write a solution, just pause and ask yourself - do I really need to visit everyone? If the answer is yes, you cannot beat that time. That is a perfectly fine answer in an interview.
+Quick life tip, after you write any solution, just ask yourself "do I actually need to visit everyone?" If yes, congrats, you've already found the fastest possible answer, and that's a perfectly respectable thing to say out loud in an interview.
 
-## A Simple Way to Feel Big O
+## Getting A Feel For Big O
 
-Let me give you everyday pictures so you can feel it, not memorize it.
+Just in case you forgot, if you want the serious math heavy version of all this with formal proofs and Greek symbols, there are way better places for that than a wiki written by someone who still occasionally counts on their fingers. Here we're just trying to make it click.
 
-- **O(1)** - picking the top plate. It does not matter if there are 10 plates or 10,000. Same effort. See this in [[arrays]] when you do `arr[0]`.
-- **O(log n)** - guessing a number between 1 and 100. You ask is it bigger than 50? Then you throw away half the options. Each guess cuts the work in half.
-- **O(n)** - shaking every hand once. More people, more handshakes. See [[hashing/frequency-map]].
-- **O(n log n)** - sorting a messy room first, then tidying. See [[sorting]].
-- **O(n²)** - asking every person to talk to every other person. If you see this, you can often do better.
+- **O(1)** - grabbing the top plate off a stack. Doesn't matter if there are 10 plates or 10,000, same effort either way. You'll see this in [[arrays]] every time you write `arr[0]`.
+- **O(log n)** - guessing a number between 1 and 100. "Is it bigger than 50?" Boom, half the options are gone. Every guess cuts your problem in half.
+- **O(n)** - shaking every single hand at the party once. More people means more handshakes, plain and simple. Peek at [[hashing/frequency-map]].
+- **O(n log n)** - sorting a messy room first, then tidying it up properly. Check out [[sorting]] for the full mess.
+- **O(n²)** - making every single person at the party talk to every other person. If you catch yourself doing this, stop and ask, can this actually be better? Most of the time, yes. That question alone will save you in a lot of interviews.
 
 ```js
-// O(1) - work stays the same no matter how big the array is
+// O(1) - the work stays flat no matter how huge the array gets
 function getFirst(arr) {
-  return arr[0]; // just one look, that is it
+  return arr[0];
 }
 
-// O(n) - you have to say hello to everyone
+// O(n) - you have to greet everyone
 function sumAll(arr) {
   let s = 0;
-  for (let x of arr) s += x; // one visit per person
+  for (let x of arr) s += x;
   return s;
 }
 
-// O(log n) - you keep cutting the search in half
+// O(log n) - you keep chopping the search in half
 function binarySearch(arr, target) {
-  let lo = 0, hi = arr.length - 1;
+  let lo = 0,
+    hi = arr.length - 1;
   while (lo <= hi) {
-    const mid = (lo + hi) >> 1; // pick the middle, throw half away
+    const mid = (lo + hi) >> 1;
     if (arr[mid] === target) return mid;
     if (arr[mid] < target) lo = mid + 1;
     else hi = mid - 1;
@@ -74,30 +78,32 @@ function binarySearch(arr, target) {
 }
 ```
 
-## Let the Input Size Guide You
+## Oopsie Daisy, Your Algorithm Isn't Always The Fastest. And That's Fine
 
-You do not have to guess what solution will pass. The constraints tell you.
+Here's something nobody tells you early enough, the "best" algorithm on paper isn't always the fastest one in real life. Sometimes the fancy O(log n) solution loses to a dumb little loop because the input is tiny and the fancy solution has more setup overhead than it's worth. Big O tells you how things scale, not which one wins every single time. Keep that humility in your back pocket.
 
-- n is 10 or less -> even trying every order might be okay
-- n is 20 or less -> trying every subset might be okay
-- n is 500 or less -> a triple loop might be okay
-- n is 5000 or less -> a double loop might be okay
-- n is 100000 or more -> you need to be clever, like sorting first or using a hash map
+That said, once your input starts growing, the constraints in the problem are basically handing you a cheat sheet for what kind of solution is even allowed to survive. Here's the rough vibe check to remember forever:
 
-This is why [[binarysearch]] and [[hashing]] feel like cheating. They let you handle big inputs without big work.
+- n around 10 or less, sure, go wild, even trying every possible order might survive
+- n around 20 or less, trying every subset is probably fine
+- n around 500 or less, a triple nested loop can usually sneak by
+- n around 5000 or less, a double loop is your comfort zone
+- n around 100000 or more, time to get clever, sort first, grab a hash map, stop brute forcing
 
-## Can You Save Space?
+This is exactly why [[binarysearch]] and [[hashing]] feel like they're cheating the system. They quietly let you deal with massive inputs without doing massive amounts of work.
 
-Normally your pile of notes grows with depth. There is a clever trick where you reuse a couple of pointers instead of a pile, so you use almost no extra space. It works by temporarily linking nodes as you walk and then unlinking them. It is neat to know it exists - the original paper is [here](https://www.sciencedirect.com/science/article/abs/pii/0020019079900681) if you are curious - but for interviews, the simple pile of notes approach is what people expect. Just mention that the trick exists if you want to sound thoughtful.
+## Can You Save Space Too?
 
-If you want to actually see how that pile of notes builds up and shrinks, watch this: [How recursion works - freeCodeCamp](https://www.freecodecamp.org/news/how-recursion-works-explained-with-flowcharts-and-a-video-de61f40cb7f9/) - it uses pictures and flowcharts, very friendly.
+Normally your note pile grows right alongside how deep you go. There's a sneaky trick where you skip the pile entirely and just reuse a couple of pointers, temporarily linking nodes as you walk through and then unlinking them on the way back. It's a fun party trick to know exists, here's [the original paper](https://www.sciencedirect.com/science/article/abs/pii/0020019079900681) if you're curious, but for interviews the normal note pile approach is exactly what people expect from you. Just casually mention the trick exists if you want to look extra thoughtful.
 
-## If You Want to Read More
+If you want to actually watch a note pile build up and shrink in real time, this video does it with pictures and flowcharts, very chill to follow, [How recursion works, freeCodeCamp](https://www.freecodecamp.org/news/how-recursion-works-explained-with-flowcharts-and-a-video-de61f40cb7f9/).
 
-These are the few that are actually enjoyable:
+## If You Want To Read More
 
-- [Grokking Algorithms](https://www.manning.com/books/grokking-algorithms) by Aditya Bhargava - uses cartoons and simple stories, you will actually remember it
-- [Introduction to Algorithms (CLRS)](https://mitpress.mit.edu/books/introduction-algorithms-fourth-edition/) - the big reference. Keep it nearby, do not try to read it cover to cover
-- [The Algorithm Design Manual](https://www.algorist.com/) by Steven Skiena - he tells real stories of where algorithms went right and wrong
+A short list of the ones actually worth your time:
 
-Remember this and you will be fine: time is how many visits, space is how tall your pile gets. Visit everyone once if you must, keep your pile short, and always ask if you can do less.
+- [Grokking Algorithms](https://www.manning.com/books/grokking-algorithms) by Aditya Bhargava, cartoons and simple stories, this one actually sticks in your brain
+- [Introduction to Algorithms (CLRS)](https://mitpress.mit.edu/books/introduction-algorithms-fourth-edition/), the big serious reference, keep it on the shelf, do not attempt to read it cover to cover like a novel
+- [The Algorithm Design Manual](https://www.algorist.com/) by Steven Skiena, full of real stories about where algorithms went right and horribly wrong
+
+If you remember nothing else, remember this, time is how many visits you make, space is how tall your pile gets, and the fastest possible answer is sometimes just visiting everyone once and calling it a day. Always ask if you can do less. Sometimes the answer is no, and that's a fine answer too.

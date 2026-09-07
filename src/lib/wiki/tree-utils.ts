@@ -1,4 +1,11 @@
+import type { CollectionEntry } from "astro:content";
 import type { TreeNode } from "@/components/wiki/WikiNavNode.astro";
+
+export interface WikiNavPage {
+  href: string;
+  title: string;
+  chapter?: string;
+}
 
 function isTreeNodeFolder(node: TreeNode): boolean {
   return Object.keys(node.children).length > 0;
@@ -59,4 +66,90 @@ export function sortTreeNodes(children: Record<string, TreeNode>): string[] {
 
     return nodeA.label.localeCompare(nodeB.label);
   });
+}
+
+function humanize(slug: string): string {
+  return slug
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
+function makeTreeNode(
+  segment: string,
+  isFile: boolean,
+  note: CollectionEntry<"wiki">,
+): TreeNode {
+  return {
+    label: isFile ? note.data.title : humanize(segment),
+    href: isFile
+      ? note.id === "index"
+        ? "/wiki"
+        : `/wiki/${note.id}`
+      : undefined,
+    chapter: note.data.chapter,
+    children: {},
+  };
+}
+
+function updateFileNode(node: TreeNode, note: CollectionEntry<"wiki">): void {
+  node.href = note.id === "index" ? "/wiki" : `/wiki/${note.id}`;
+  node.label = note.data.title;
+  node.chapter = note.data.chapter;
+}
+
+export function buildWikiTree(
+  notes: CollectionEntry<"wiki">[],
+): Record<string, TreeNode> {
+  const root: Record<string, TreeNode> = {};
+
+  for (const note of notes) {
+    const segments = note.id.split("/");
+    let currentLevel = root;
+    for (let i = 0; i < segments.length; i++) {
+      const segment = segments[i];
+      const isFile = i === segments.length - 1;
+
+      if (!currentLevel[segment]) {
+        currentLevel[segment] = makeTreeNode(segment, isFile, note);
+      } else if (isFile) {
+        updateFileNode(currentLevel[segment], note);
+      }
+      currentLevel = currentLevel[segment].children;
+    }
+  }
+
+  return root;
+}
+
+export function flattenWikiTree(root: Record<string, TreeNode>): WikiNavPage[] {
+  const pages: WikiNavPage[] = [];
+
+  for (const key of sortTreeNodes(root)) {
+    const node = root[key];
+    if (node.href) {
+      pages.push({
+        href: node.href,
+        title: node.label,
+        chapter: node.chapter,
+      });
+    }
+    pages.push(...flattenWikiTree(node.children));
+  }
+
+  return pages;
+}
+
+export function getSidebarNavigation(
+  pages: WikiNavPage[],
+  currentHref: string,
+): { prev?: WikiNavPage; next?: WikiNavPage } {
+  const normalized = currentHref.replace(/\/$/, "");
+  const index = pages.findIndex((page) => page.href === normalized);
+  if (index === -1) return {};
+
+  return {
+    prev: index > 0 ? pages[index - 1] : undefined,
+    next: index < pages.length - 1 ? pages[index + 1] : undefined,
+  };
 }
