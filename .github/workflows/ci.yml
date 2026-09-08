@@ -3,7 +3,8 @@ name: CI
 on:
   push:
     branches:
-      - main
+      # disable triggering of this workflow for now
+      # - main
 
 jobs:
   release:
