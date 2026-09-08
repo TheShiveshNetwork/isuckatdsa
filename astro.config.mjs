@@ -54,7 +54,16 @@ export default defineConfig({
       },
     },
   },
-  integrations: [pagefind(), mdx(), sitemap()],
+  integrations: [
+    pagefind(),
+    mdx(),
+    sitemap({
+      filter: (page) => {
+        return !page.replace(/\/$/, "").endsWith("/wiki");
+      },
+      changefreq: "weekly",
+    }),
+  ],
   markdown: {
     processor: unified({
       remarkPlugins: [

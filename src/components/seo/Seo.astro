@@ -1,5 +1,4 @@
 ---
-import ArticleMeta from "./ArticleMeta.astro";
 import { SITE } from "@/lib/site-config";
 import {
   formatCanonicalURL,
@@ -11,36 +10,161 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  imageAlt?: string;
   pageType?: "website" | "article";
   publishedTime?: Date;
   modifiedTime?: Date;
   tags?: string[];
+  noindex?: boolean;
 }
 
 const {
   title: rawTitle,
   description: rawDescription,
   image,
+  imageAlt,
   pageType = "website",
   publishedTime,
   modifiedTime,
-  tags,
+  tags = [],
+  noindex = false,
 } = Astro.props;
 
 const title = normalizeTitle(rawTitle, SITE.name);
 const description = normalizeDescription(rawDescription, SITE.description);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const formattedCanonical = formatCanonicalURL(canonicalURL);
+const siteUrl = Astro.site ? Astro.site.toString() : SITE.url;
 const ogImage = image
   ? new URL(image, Astro.site).toString()
   : new URL(SITE.image, Astro.site).toString();
+const ogImageAlt = imageAlt ?? SITE.imageAlt;
+
+const breadcrumbItems = Astro.url.pathname
+  .split("/")
+  .filter(Boolean)
+  .map((segment, index, arr) => ({
+    position: index + 1,
+    name: segment.charAt(0).toUpperCase() + segment.slice(1),
+    item: `${siteUrl}/${arr.slice(0, index + 1).join("/")}/`,
+  }));
+
+const graph: Record<string, unknown>[] = [
+  {
+    "@type": "WebSite",
+    "@id": `${siteUrl}#website`,
+    url: siteUrl,
+    name: SITE.name,
+    alternateName: SITE.siteName,
+    description: SITE.description,
+    inLanguage: "en",
+    publisher: { "@id": `${siteUrl}#${SITE.schema.organizationType}` },
+  },
+  {
+    "@type": SITE.schema.organizationType,
+    "@id": `${siteUrl}#${SITE.schema.organizationType}`,
+    name: SITE.schema.organizationName,
+    url: siteUrl,
+    logo: new URL(SITE.image, siteUrl).toString(),
+    sameAs: [
+      SITE.social.github,
+      `https://twitter.com/${SITE.twitterHandle.replace("@", "")}`,
+    ],
+  },
+];
+
+if (pageType === "article") {
+  graph.push({
+    "@type": "Article",
+    headline: rawTitle,
+    description,
+    image: [ogImage],
+    inLanguage: "en",
+    datePublished: publishedTime?.toISOString(),
+    dateModified: modifiedTime?.toISOString() || publishedTime?.toISOString(),
+    author: { "@id": `${siteUrl}#person` },
+    publisher: { "@id": `${siteUrl}#${SITE.schema.organizationType}` },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": formattedCanonical,
+    },
+    keywords: tags.length > 0 ? tags.join(", ") : undefined,
+  });
+} else {
+  graph.push({
+    "@type": "WebPage",
+    "@id": formattedCanonical,
+    url: formattedCanonical,
+    name: title,
+    isPartOf: { "@id": `${siteUrl}#website` },
+  });
+}
+
+if (breadcrumbItems.length > 1) {
+  graph.push({
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+      ...breadcrumbItems.map((b) => ({
+        "@type": "ListItem",
+        position: b.position + 1,
+        name: b.name,
+        item: b.item,
+      })),
+    ],
+  });
+}
+
+graph.push({
+  "@type": "Person",
+  "@id": `${siteUrl}#person`,
+  name: SITE.author,
+  url: siteUrl,
+  sameAs: [
+    SITE.social.github,
+    `https://twitter.com/${SITE.twitterHandle.replace("@", "")}`,
+  ],
+});
 ---
 
-<!-- Primary -->
+<!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
+<meta name="keywords" content={`${SITE.keywords}, ${tags.join(", ")}`} />
+<meta name="author" content={SITE.author} />
+<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+<meta name="application-name" content={SITE.name} />
 <link rel="canonical" href={formattedCanonical} />
+
+{
+  pageType === "article" && publishedTime && (
+    <meta
+      property="article:published_time"
+      content={publishedTime.toISOString()}
+    />
+  )
+}
+{
+  pageType === "article" && modifiedTime && (
+    <meta
+      property="article:modified_time"
+      content={modifiedTime.toISOString()}
+    />
+  )
+}
+{
+  pageType === "article" &&
+    tags.map((tag) => <meta property="article:tag" content={tag} />)
+}
+{
+  pageType === "article" && (
+    <meta
+      property="article:author"
+      content={new URL("/", Astro.site).toString()}
+    />
+  )
+}
 
 <!-- Open Graph -->
 <meta property="og:type" content={pageType} />
@@ -48,20 +172,22 @@ const ogImage = image
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content={ogImageAlt} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta property="og:site_name" content={SITE.name} />
+<meta property="og:locale" content={SITE.locale} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={SITE.twitterHandle} />
+<meta name="twitter:creator" content={SITE.twitterHandle} />
 <meta name="twitter:url" content={formattedCanonical} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
-
-{
-  pageType === "article" && (
-    <ArticleMeta {publishedTime} {modifiedTime} {tags} />
-  )
-}
+<meta name="twitter:image:alt" content={ogImageAlt} />
 
 <!-- JSON-LD -->
 <script
@@ -69,14 +195,6 @@ const ogImage = image
   type="application/ld+json"
   set:html={JSON.stringify({
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "@id": `${Astro.site ? Astro.site.toString() : SITE.url}#website`,
-        url: Astro.site ? Astro.site.toString() : SITE.url,
-        name: SITE.name,
-        description: SITE.description,
-      },
-    ],
+    "@graph": graph,
   })}
 />

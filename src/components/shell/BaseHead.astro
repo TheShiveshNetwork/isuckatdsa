@@ -8,20 +8,24 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  imageAlt?: string;
   pageType?: "website" | "article";
   publishedTime?: Date;
   modifiedTime?: Date;
   tags?: string[];
+  noindex?: boolean;
 }
 
 const {
   title,
   description = SITE.description,
   image,
+  imageAlt,
   pageType,
   publishedTime,
   modifiedTime,
   tags,
+  noindex,
 } = Astro.props;
 ---
 
@@ -43,10 +47,12 @@ const {
   {title}
   {description}
   {image}
+  {imageAlt}
   {pageType}
   {publishedTime}
   {modifiedTime}
   {tags}
+  {noindex}
 />
 
 <Font cssVariable="--font-sans" />
