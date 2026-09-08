@@ -29,6 +29,7 @@ export const SITE = {
     "i suck at dsa - a wiki of DSA mental models and patterns for people who suck at dsa.",
   favicon: "/favicon.svg",
   googleSiteVerification: "S5gLXznDgd9e2bHFaus04MerHleWClbDTEaqSSLtV4s",
+  googleAnalyticsId: "G-MY6DSDEV6Z",
   twitterHandle: "@isuckatdsa",
   githubHandle: "isuckatdsa",
   social: {
