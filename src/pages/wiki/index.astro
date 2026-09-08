@@ -1,3 +1,18 @@
 ---
-return Astro.redirect("/wiki/foundations", 302);
+return Astro.redirect("/wiki/foundations", 301);
 ---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, follow" />
+    <title>i suck at dsa | isuckatdsa</title>
+    <meta
+      name="description"
+      content="isuckatdsa - a free wiki of DSA mental models and patterns for people who suck at dsa."
+    />
+  </head>
+  <body>
+    <p>Redirecting to <a href="/wiki/foundations">the wiki</a>...</p>
+  </body>
+</html>

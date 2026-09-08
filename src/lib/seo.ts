@@ -3,7 +3,7 @@ const DESCRIPTION_MIN_LENGTH = 120;
 const DESCRIPTION_MAX_LENGTH = 160;
 const TITLE_SEPARATOR = " | ";
 const DESCRIPTION_PADDING =
-  ". A wiki of DSA mental models and patterns. ...for people who suck at dsa.";
+  " - a free wiki of DSA mental models, patterns, and algorithms for people who suck at dsa.";
 
 function truncateByWordBoundary(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;

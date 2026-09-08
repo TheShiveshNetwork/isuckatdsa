@@ -9,7 +9,7 @@ import NoteCard from "@/components/wiki/NoteCard.astro";
 const categories = await getCategorizedNotes();
 ---
 
-<BaseLayout title={`${SITE.title} - Home`}>
+<BaseLayout title={SITE.siteName} description={SITE.description}>
   <main class="mx-auto max-w-5xl px-4 py-16 md:py-24" data-pagefind-body>
     <header class="mb-16">
       <h1 class="text-3xl font-bold tracking-tight md:text-4xl">

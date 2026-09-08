@@ -6,7 +6,10 @@ import { getTags } from "@/lib/wiki/get-tags";
 const tags = await getTags();
 ---
 
-<BaseLayout title={`Tags - ${SITE.name}`}>
+<BaseLayout
+  title={`All Tags - ${SITE.name}`}
+  description={`Browse all tags across the i suck at dsa wiki of data structures and algorithms mental models, patterns, and techniques for coding interview prep.`}
+>
   <main class="mx-auto max-w-3xl px-4 py-16 md:py-24" data-pagefind-body>
     <header class="mb-12">
       <h1 class="text-3xl font-bold tracking-tight md:text-4xl">Tags</h1>
