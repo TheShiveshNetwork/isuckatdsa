@@ -13,6 +13,8 @@ chapter: "0"
 
 This is a no-BS, simple list of basic ideas to learn DSA. No deep technical explanations, just mental models and patterns to get you started. If you want to go technical, follow other resources - this is not that.
 
+This site follows pseudo code, so it is not tied to any language. Pick the one you chose in the STL section and write the code in your own style. I'll not give you the code.
+
 ### 📌 Quick Links
 
 - [[foundations/complexity]] — Complexity and Big O

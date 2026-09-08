@@ -14,6 +14,8 @@ When adding a new note, the title is only in the markdown frontmatter (`title` f
 
 When adding documentation for a note, use human-like language. Do not use a lot of jargon. No em dashes. Use funny language and build connections across the entire app. Make it feel like a story. Instead of reading like a dry, academic textbook, it should read like a conversation with a funny, highly intelligent friend.
 
+When writing a code block into wiki docs, always write pseudo code. No language specific code. Slightly similar to JavaScript is okay. Do not use `===` signs, use `==`.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
