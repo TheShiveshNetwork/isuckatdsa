@@ -33,7 +33,7 @@ Obviously, if you're already in debt, you probably don't want to walk into the n
 
 That's what the Gambler is doing as he walks through the casino. At every round he's basically asking:
 
-> *Am I better off keeping what I've got, or should I just forget the past and start again here?*
+> _Am I better off keeping what I've got, or should I just forget the past and start again here?_
 
 If the old streak is helping, he keeps it. If it's hurting him, he dumps it and starts fresh.
 
@@ -69,9 +69,9 @@ And that's really the whole relationship.
 
 Before we go any further, here's how this casino works:
 
-* The gambler moves through every round in order.
-* A streak has to be **continuous**. He can't skip a bad round.
-* At any point, he can throw away his old streak and start a new one.
+- The gambler moves through every round in order.
+- A streak has to be **continuous**. He can't skip a bad round.
+- At any point, he can throw away his old streak and start a new one.
 
 ---
 
@@ -144,4 +144,3 @@ return maxProd;
 ```
 
 If you remember the Gambler and his Assistant, you don't really need to memorise Kadane's algorithm. You can just replay the little casino scene in your head.
-

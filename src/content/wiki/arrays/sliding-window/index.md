@@ -43,4 +43,5 @@ for right in 0 .. n-1:
   best = max(best, right - left + 1) // how wide is the frame right now?
 return best
 ```
+
 You'll see this exact same frame again in [[strings/sliding-window-on-strings]], except now the train is made of letters instead of numbers, and again in [[intervals/merge-intervals]], where the train is really just a timeline pretending to be something else. Whenever a problem mentions something staying together in a row, that's your cue. Feel the cameraman or cameragirl inside you.

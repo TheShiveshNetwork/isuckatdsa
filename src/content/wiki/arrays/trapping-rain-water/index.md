@@ -55,5 +55,3 @@ function trap(heights) {
 ```
 
 Walk that hallway once in your head and you will see why it works. That is the whole trick.
-
-

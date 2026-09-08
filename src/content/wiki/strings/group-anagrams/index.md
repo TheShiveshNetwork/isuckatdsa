@@ -22,7 +22,7 @@ You walk the list once. For each word, you make its signature, then you toss the
 function groupAnagrams(words) {
   groups = map() // signature -> list of words
   for w in words:
-    key = sorted(w) // or frequency string like "1#0#2..." 
+    key = sorted(w) // or frequency string like "1#0#2..."
     // e.g., "listen" -> "eilnst"
     if not groups.has(key) groups.set(key, [])
     groups.get(key).push(w)
