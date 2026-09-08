@@ -32,6 +32,14 @@ const {
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/x-icon" href={SITE.favicon} />
+{
+  SITE.googleSiteVerification && (
+    <meta
+      name="google-site-verification"
+      content={SITE.googleSiteVerification}
+    />
+  )
+}
 <meta
   name="theme-color"
   content="#f8f5f0"
