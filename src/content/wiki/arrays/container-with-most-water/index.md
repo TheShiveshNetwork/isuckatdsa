@@ -11,26 +11,28 @@ chapter: "1.9"
 
 ### Overview
 
-Same skyline as [[arrays/trapping-rain-water]], but now you get to pick only two buildings to be the walls of a container. You want the biggest container. Water amount is width between them times the shorter wall.
+Before, in [[arrays/trapping-rain-water]], you filled every dip. Now you get to pick only two pillars to be the walls of one big container. You want the biggest container. Amount is width between them times the height of the shorter wall. Same pillars, different question.
 
-You could try every pair like nested loops in [[foundations/core-patterns]]. That is O(n²) and you will time out.
+Close your eyes again. Sherlock at the left end, Watson at the right end. That is the widest container you can make. Now look at the two pillars they touch. Water is limited by the shorter one, so moving the taller one inward can only make things worse. You would lose width and keep the same short limit. So you move the shorter side, hoping the next pillar is tall enough to make up for the width you lost.
 
-Instead, use the same two walkers from [[arrays/two-pointers]]. Start with the widest container - left at start, right at end. The water is limited by the shorter wall. So you move the shorter wall inward hoping to find a taller one that makes up for the lost width. Keep the best you see.
+That is it. You keep the best you have seen and keep moving the shorter detective.
 
-```js
-// two pointers, O(n) time, O(1) space
+```c++
+// Sherlock and Watson hunt the biggest bucket, O(n) time, O(1) space
 function maxArea(h) {
-  let left = 0, right = h.length -1, best = 0;
+  left = 0               // Sherlock
+  right = h.length - 1   // Watson
+  best = 0
   while (left < right) {
-    let width = right - left;
-    let height = Math.min(h[left], h[right]);
-    best = Math.max(best, width * height);
-    // move the shorter wall, the taller wall is the limiter
-    if (h[left] < h[right]) left++;
-    else right--;
+    width = right - left
+    height = min(h[left], h[right]) // limited by shorter wall
+    best = max(best, width * height)
+    // move the limiting wall, keep the taller one
+    if (h[left] < h[right]) left++
+    else right--
   }
-  return best;
+  return best
 }
 ```
 
-It feels almost identical to trapping rain water, but here you maximize, there you sum. Both are just two friends walking inward and making a greedy choice. If you see two walls and area, think two pointers.
+Walk that hallway once and you will see why it works. That is the whole trick.

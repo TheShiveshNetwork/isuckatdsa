@@ -11,23 +11,23 @@ chapter: "1.6"
 
 ### Overview
 
-You are at that party again from [[foundations/complexity]]. Everyone has a number on their chest. You need two people whose numbers add to a target. The naive way is to ask everyone to shake everyone's hand - that is nested loops from [[foundations/core-patterns]] and it is O(n²).
+You are still on that same train from [[arrays/sliding-window]], but now every bogie has a number on it. The conductor walks up and says I need two bogies whose numbers add to a target. The slow way is to ask every bogie to shake hands with every other bogie - that is the nested loops walk from [[foundations/core-patterns]] and it is O(n²). You will miss the train doing that.
 
-Here is the smarter way. Walk once and carry a notebook from [[hashing/frequency-map]]. For each person, you ask the notebook: have I seen the partner I need? The partner is just `target - current`. If yes, you are done. If not, you write the current person down and keep walking.
+The faster way is to walk once with the same notebook you used in [[arrays/prefix-sum]], but this time your notebook is a hash map from [[hashing/frequency-map]]. For each bogie, you look at its number and ask the notebook: have I already seen the partner I need? The partner is just `target - current`. If the notebook says yes, you found your pair and you stop. If not, you write this bogie's number down and slide your camera one step forward.
 
-One walk, one notebook. O(n) time, O(n) space.
+One walk, one notebook. O(n) time, O(n) space, same train.
 
-```js
-// complement lookup - the hash map trick
+```c++
+// complement lookup - walk once with a notebook
 function twoSum(arr, target) {
-  let seen = new Map(); // notebook: number -> index
-  for (let i = 0; i < arr.length; i++) {
-    let need = target - arr[i];
-    if (seen.has(need)) return [seen.get(need), i]; // found partner
-    seen.set(arr[i], i); // write yourself down
-  }
-  return null;
+  seen = new Map() // notebook: number -> where you saw it
+  for i in 0 .. n-1:
+    need = target - arr[i]
+    if seen.has(need) // have I seen the partner before?
+      return [seen.get(need), i]  // you two, come here
+    seen.set(arr[i], i) // write this bogie down, keep walking
+  return null
 }
 ```
 
-If the array were sorted, you would not even need the notebook. You would use the two walkers from [[arrays/two-pointers]] instead. Same handshake, different tool. Pick based on sorted or not.
+And hey, if someone tells you the train is already sorted, you do not even need the notebook. You just put the two walkers from [[arrays/two-pointers]] at both ends and let them walk toward each other. Same handshake, different trick. If it is sorted, use walkers. If not, use the notebook.

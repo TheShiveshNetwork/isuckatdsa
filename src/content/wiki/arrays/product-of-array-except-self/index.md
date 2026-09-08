@@ -11,29 +11,29 @@ chapter: "1.7"
 
 ### Overview
 
-This one feels like a riddle. For each house in the building from [[arrays]], you need the product of every other house, but you are not allowed to divide and you cannot use a second building.
+This one is the same train, but now it is a riddle. For each bogie, you need the product of every other bogie, but the conductor says no dividing and you cannot borrow a second train.
 
-The trick is to use the prefix idea from [[arrays/prefix-sum]], but for products. You walk left to right and remember the product of everything before you. Then you walk right to left and multiply by the product of everything after you. Two walks, no extra building except the answer.
+So you do what you did with the notebook in [[arrays/prefix-sum]], just with multiplication. First walk: you go left to right and you remember the product of everything before you. You write that down. Second walk: you go right to left and you remember the product of everything after you, and you multiply.
 
-Think of it like everyone whispers the product to the next person.
+Picture the train again. Each bogie whispers to the next: hey, the product before me was this, pass it on. Then on the way back, they whisper the product after me.
 
-```js
-// O(n) time, O(1) extra space (answer does not count)
+Two walks on the same train, no extra train except the answer you must return.
+
+```c++
+// two walks, O(n) time, O(1) extra space - answer does not count
 function productExceptSelf(arr) {
-  let n = arr.length;
-  let ans = Array(n).fill(1);
-  let left = 1;
-  for (let i = 0; i < n; i++) {
-    ans[i] = left; // product of all before me
-    left *= arr[i];
-  }
-  let right = 1;
-  for (let i = n -1; i >=0; i--) {
-    ans[i] *= right; // multiply by product of all after me
-    right *= arr[i];
-  }
-  return ans;
+  n = arr.length
+  ans = array(n, 1)
+  left = 1
+  for i in 0 .. n-1:
+    ans[i] = left  // product of all bogies before me
+    left *= arr[i] // update for next bogie
+  right = 1
+  for i in n-1 .. 0:
+    ans[i] *= right  // multiply by product of all bogies after me
+    right *= arr[i]
+  return ans
 }
 ```
 
-No division, no extra array besides answer. It is just prefix and suffix thinking from [[foundations/core-patterns]] applied to products.
+No division, no extra train. It is just prefix and suffix thinking from [[foundations/core-patterns]] and the same notebook idea from [[arrays/prefix-sum]], just with a different operation.

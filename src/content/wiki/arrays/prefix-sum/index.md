@@ -11,22 +11,25 @@ chapter: "1.3"
 
 ### Overview
 
-You know how you hate adding the same numbers over and over? Prefix sum is your notebook. You walk the building once from [[arrays]] and you write down the running total at each floor. After that, sum of any range is just subtraction. No more loops.
+Remember that long train from [[arrays/sliding-window]]? Prefix sum is what you do when you get tired of re-counting the same bogies. Instead of adding 2+4+1 every time someone asks, you walk the train once with a notebook. At each bogie you write down the running total so far.
 
-Think of it as leaving breadcrumbs. `prefix[i]` is the sum of everything before floor `i`. So sum from `l` to `r` is just `prefix[r+1] - prefix[l]`. One walk, many answers.
+That notebook is your `prefix`. `prefix[i]` is the total weight of the first `i` bogies before you. You write it once, and after that any question like what is the weight from bogie `l` to `r` is just subtraction. You never walk again. One walk, many answers, same train.
 
-```js
+Picture you wrote `0, 2, 6, 7, 12` for `[2,4,1,5]`. Someone asks sum from 1 to 2? You do not re-add 4+1. You just do `prefix[3] - prefix[1]` which is `7 - 2 = 5`. You just flipped two pages in your notebook.
+
+```c++
 // one walk to build notebook, O(n) time, O(n) space
-let arr = [2, 4, 1, 5];
-let prefix = [0];
-for (let x of arr) prefix.push(prefix[prefix.length -1] + x);
-// prefix is [0,2,6,7,12]
+arr = [2, 4, 1, 5]
+prefix = [0]
+for x in arr:
+  prefix.push(prefix[prefix.length - 1] + x)
+// prefix is now [0, 2, 6, 7, 12] - you wrote it once
 
-// sum from index 1 to 2 is arr[1]+arr[2] = 4+1 = 5
-let sum_1_2 = prefix[3] - prefix[1]; // 7 - 2 = 5, no loop
+// sum from bogie 1 to 2 is just page subtraction
+sum_1_2 = prefix[3] - prefix[1] // 7 - 2 = 5, no loop
 
-// with hash map, you can even ask "how many subarrays sum to K?"
-// see [[hashing/prefix-sum-plus-hashmap]] for that magic
+// with a hash map, your notebook can even answer how many subarrays sum to K
+// see [[hashing/prefix-sum-plus-hashmap]] - same notebook, fancier question
 ```
 
-If you see range sum queries or subarray sum equals K, open the notebook. Do not re-add.
+If a problem keeps asking you for sums over and over, do not be the person re-adding the train every time. Open the notebook. And if the question is contiguous, remember your camera frame from sliding window also lives on this same train - they are family.

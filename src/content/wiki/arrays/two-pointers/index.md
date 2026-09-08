@@ -11,27 +11,29 @@ chapter: "1.1"
 
 ### Overview
 
-Picture this. Two friends are in the same apartment building from [[arrays]], but one starts at the top floor and the other at the bottom. They walk toward each other until they meet. That is it. That is two pointers.
+Put Sherlock on the left end, Watson on the right end. Same hallway you just walked in [[arrays/trapping-rain-water]], but now the job is simpler. The array is sorted, you need two numbers that add to a target.
 
-You use this when the array is sorted and you need a pair. Instead of checking everyone with everyone like in [[foundations/core-patterns]] nested loops, you let the sum tell you where to move. Too big? Move the right person down. Too small? Move the left person up.
+You could ask everyone to shake everyone else's hand like the nested loops in [[foundations/core-patterns]]. That is O(n²). Do not.
 
-It is the opposite of brute force. You do not look at everything. You let the array guide you.
+Instead let the sum decide who moves. Put Sherlock at 0, Watson at the end. Look at `arr[Sherlock] + arr[Watson]`. Too big? Watson is too tall, move Watson left. Too small? Sherlock is too short, move Sherlock right. You never need to look at the pairs you skipped, because the array is sorted and you already know they cannot work.
 
-```
-// sorted array, find pair that sums to target - O(n), O(1) space
+It is the same two detectives, just a different case. No notebook, no extra space.
+
+```c++
+// Sherlock and Watson walk toward each other, O(n) time, O(1) space
 function twoPointers(arr, target) {
-  left = 0
-  right = arr.length - 1  // two friends at ends
+  left = 0              // Sherlock
+  right = arr.length - 1  // Watson
   while (left < right) {
     sum = arr[left] + arr[right]
     if (sum == target) return [left, right]  // found them
-    if (sum < target) left++  // need bigger, move left forward
-    else right--              // need smaller, move right back
+    if (sum < target) left++   // need bigger, Sherlock moves
+    else right--               // need smaller, Watson moves
   }
   return null
 }
 ```
 
-Same idea works walking the same direction too, like fast and slow pointers. One runs, one walks. If they meet, you found a cycle. You will see that again in [[linkedlists/fast-and-slow-pointers]].
+Same idea works when they walk the same direction too, like fast and slow pointers. One runs, one walks. If they meet, you found a cycle. You will see that in [[linkedlists/fast-and-slow-pointers]].
 
-If you see sorted + pair, think two walkers.
+If you see sorted plus pair, put Sherlock and Watson at the ends.

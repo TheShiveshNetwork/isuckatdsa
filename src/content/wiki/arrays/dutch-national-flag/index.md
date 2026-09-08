@@ -11,35 +11,37 @@ chapter: "1.5"
 
 ### Overview
 
-Imagine you have a pile of red, white, and blue balls all mixed up. Dutch flag style. You need them sorted as red, then white, then blue, in one pass, without a new bucket. This is the problem, and it is also the name.
+You know that train from [[arrays/sliding-window]]? Now imagine each bogie is painted red, white, or blue, all mixed up. You need the train to be all red, then white, then blue, in one walk, without an extra track to park them. That is the Dutch flag.
 
-You do it with three pointers, which you already met in [[arrays/two-pointers]]. Think of three sections forming as you walk:
+You do it with three sections forming right in front of you as you walk the same train. Think of the train splitting into three parts while your camera frame moves.
 
-- Left section is all red (0s)
-- Middle section is white (1s) you are still figuring out
-- Right section is blue (2s)
+- Left part is already sorted red. You know it is done.
+- Right part is already sorted blue.
+- Middle part is white you are still figuring out, and the walker `mid` is your camera's center.
 
-You have a walker in the middle. If it sees red, you swap it to the left. If it sees blue, you swap it to the right. If it sees white, you just move forward.
+Your walker stands at `mid`. If it sees red, you swap that bogie to the left wall and both `low` and `mid` step forward. If it sees white, you just let the camera slide forward. If it sees blue, you swap it to the right wall and the right wall moves in, but you do not move `mid` yet because the new bogie that landed at `mid` is still unknown.
 
-```
-// one pass, O(n) time, O(1) space - no extra array
+It is the same two-pointer walk you met in [[arrays/two-pointers]], just with three pointers now, and it is the cleanest example of [[foundations/core-patterns]] in-place modification. You tidy the same train, you do not build a second one.
+
+```c++
+// one walk on the same train, O(n) time, O(1) extra space
 function dutchFlag(arr) {
-  low = 0
-  mid = 0
-  high = arr.length - 1
+  low = 0      // left wall - everything before this is red
+  mid = 0      // your camera - current bogie
+  high = arr.length - 1  // right wall - everything after is blue
   while (mid <= high) {
     if (arr[mid] == 0) {
-      swap(arr[low], arr[mid])  // red to front
+      swap(arr[low], arr[mid])  // red bogie to left part
       low++
       mid++
     } else if (arr[mid] == 1) {
-      mid++  // white stays middle
+      mid++  // white stays in middle, just slide
     } else {
-      swap(arr[mid], arr[high])  // blue to end
-      high--
+      swap(arr[mid], arr[high])  // blue bogie to right part
+      high--  // do not move mid yet, new bogie is unknown
     }
   }
 }
 ```
 
-It is the poster child for [[foundations/core-patterns]] in-place modification. You tidy the same apartment, no new apartment. You will use this idea again when you need to partition without extra space.
+You will use this same three-wall trick whenever you need to partition without extra space.
